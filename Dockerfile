@@ -1,21 +1,21 @@
-FROM alpine:3.14.0
+FROM alpine:3.15.0
 LABEL maintainer="Hugo Blom <hugo.blom1@gmail.com>"
 
 # Dependencies
-RUN apk --no-cache add curl=7.77.0-r1 vlc=3.0.14-r0 ffmpeg=4.4-r1 tzdata=2021a-r0 bash=5.1.4-r0
+RUN apk --no-cache add curl=7.80.0-r0 vlc=3.0.16-r3	ffmpeg=4.4.1-r2 tzdata=2021e-r0	bash=5.1.16-r0
 
 # Remove APK cache
 RUN rm -rf /var/cache/apk/*
 
 # Add xteve binary
-ADD https://github.com/xteve-project/xTeVe-Downloads/raw/master/xteve_linux_amd64.zip /tmp/xteve_linux_amd64.zip
+ADD https://github.com/xteve-project/xTeVe-Downloads/blob/master/xteve_linux_amd64.tar.gz?raw=true /tmp/xteve_linux_amd64.tar.gz
 
 # Unzip the Binary
 RUN mkdir -p /xteve
-RUN unzip -o /tmp/xteve_linux_amd64.zip -d /xteve
+RUN tar -xvf /tmp/xteve_linux_amd64.tar.gz --directory /xteve
 
 # Clean up the .zip
-RUN rm /tmp/xteve_linux_amd64.zip
+RUN rm /tmp/xteve_linux_amd64.tar.gz
 
 # Add user for VLC and ffmpeg
 RUN addgroup --gid 65000 -S xteve && adduser --uid 65000 -S xteve -G xteve

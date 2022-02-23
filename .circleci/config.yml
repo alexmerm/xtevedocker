@@ -3,7 +3,6 @@ version: 2.1
 # Use a package of configuration called an orb.
 
 orbs:
-  docker: hux/docker@0.0.2
   markdown: hux/markdown@0.0.23
 
 jobs:
@@ -26,11 +25,9 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - docker/lint
       - markdown/lint
       - build:
           requires:
-            - docker/lint
             - markdown/lint
       - test:
           requires:
