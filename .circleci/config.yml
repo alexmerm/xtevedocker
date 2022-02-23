@@ -20,6 +20,13 @@ jobs:
     steps:
       - run: ./xteve -info
       - run: cat /home/xteve/.xteve/settings.json
+  publish:
+    machine: true
+    steps:
+      - checkout
+      - run: docker build . --file Dockerfile --tag bl0m1/xtevedocker:latest
+      - run: echo "$DOCKER_PASS" | docker login --username bl0m1 --password-stdin
+      - run: docker push bl0m1/xtevedocker:latest
 
 workflows:
   version: 2
@@ -32,3 +39,10 @@ workflows:
       - test:
           requires:
             - build
+      - publish:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
